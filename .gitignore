@@ -1,0 +1,6 @@
+authorize
+request
+conf.py
+*.pyc
+histfile
+update
