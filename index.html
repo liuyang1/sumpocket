@@ -1,0 +1,22 @@
+<html>
+<head></head>
+<body>
+1. Enter your consumer_key and hit "Submit" and you should get a response saying "code=XXXX"
+<form action="http://getpocket.com/v3/oauth/request" method="post">
+    Consumer_key
+    <input type="text" name="consumer_key" value ="">
+    <input type="hidden" name="redirect_uri" value="fobar://test">
+    <input type="submit" value="Get code">
+</form>
+
+2. Go to the following link and accept the application authorization request.<p>
+Go to https://getpocket.com/auth/authorize?request_token=&lt;code from step 1&gt;&amp;redirect_uri=fobar://test</p>
+
+3. Enter your consumer_key and the code from step 1&gt; Push submit and you should get a response with "access_token=YYYYY"
+<form action="http://getpocket.com/v3/oauth/authorize" method="post">
+    Consumer_key<input type="text" name="consumer_key" value ="">
+    Code<input type="text" name="code" value ="">
+    <input type="submit" value="Authorize">
+</form>
+</body>
+</html>
