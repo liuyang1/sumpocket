@@ -2,20 +2,32 @@
 
 import sys
 import urllib
-import urllib2
+try:
+    import urllib2
+except:
+    print("use python2 instead")
+    sys.exit()
 import json
-import datetime
 import logging
+import logging.config
 from conf import *
 from datetime import date
 
-# logger = logging.getLogger('sumpocket')
-# logger.setlevel(logging.INFO)
+with open('logging.json') as fp:
+    conf = json.load(fp)
+    logging.config.dictConfig(conf)
+
+log = logging.getLogger('sumpocket')
+
 def post(url, dct):
     dct["state"] = "unread"
     dct["detailType"] = "simple"
     data = urllib.urlencode(dct)
-    req = urllib2.urlopen(url, data)
+    try:
+        req = urllib2.urlopen(url, data)
+    except urllib2.HTTPError:
+        log.fatal('bad request')
+        sys.exit()
     rsp = req.read()
     return rsp
 
@@ -32,6 +44,8 @@ def loadHist(fn):
     with open(fn) as fp:
         txt = fp.read()
         return json.loads(txt)
+    log.warn("not exist histfile")
+    return []
 
 
 def saveHist(fn, data):
@@ -52,12 +66,12 @@ def cmp(old, new):
     return len(new), len(a), len(d)
 
 if __name__ == "__main__":
-    print("post")
+    log.info("post")
     rsp = post('https://getpocket.com/v3/get', conf)
     new = parse(rsp)
     old = loadHist(hist)
     c = cmp(old, new)
-    print(c)
+    log.info(str(c))
     saveUpdate(upfn, c)
     saveHist(hist, new)
-    print("save")
+    log.info("save")
