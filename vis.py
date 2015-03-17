@@ -14,7 +14,8 @@ def loadTpl(fn):
         return fp.read()
 
 
-def fmtTpl(tpl, data):
+def fmtLineTpl(tplfn, data):
+    tpl = loadTpl(tplfn)
     d = {}
     d['username'] = 'pocket4t'
     date = [t[0] for t in data]
@@ -27,9 +28,32 @@ def fmtTpl(tpl, data):
     r = tpl % d
     return r
 
-if __name__ == "__main__":
-    tpl = loadTpl('vis.html.tpl')
+
+def fmtKTpl(tplfn, data):
+    tpl = loadTpl(tplfn)
+    d = {}
+    d['username'] = 'pocket4t'
+    date = [t[0] for t in data]
+    d['date'] = str(date)
+    kdata = [(int(t[1]), int(t[2]), int(t[3])) for t in data]
+    kdata = [[a0 + a2 - a1 , a0, a0 - a1, a0 + a2] for a0, a1, a2 in kdata]
+    d['kdata'] = str(kdata)
+    r = tpl % d
+    return r
+
+
+
+def LineTpl():
     data = loadData('update')
-    r = fmtTpl(tpl, data)
+    r = fmtLineTpl('vis.html.tpl', data)
     print(r)
 
+
+def KTpl():
+    data = loadData('update')
+    r = fmtKTpl('kvis.html.tpl', data)
+    print(r)
+
+
+if __name__ == "__main__":
+    KTpl()
