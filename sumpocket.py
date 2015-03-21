@@ -10,19 +10,23 @@ except:
 import json
 import logging
 import logging.config
-from conf import *
+import conf
 from datetime import date
 
 with open('logging.json') as fp:
-    conf = json.load(fp)
-    logging.config.dictConfig(conf)
+    logcfg = json.load(fp)
+    logging.config.dictConfig(logcfg)
 
 log = logging.getLogger('sumpocket')
+hist = "histfile"
+upfn = "update"
+
 
 def post(url, dct):
     dct["state"] = "unread"
     dct["detailType"] = "simple"
     data = urllib.urlencode(dct)
+    log.debug(data)
     try:
         req = urllib2.urlopen(url, data)
     except urllib2.HTTPError:
@@ -38,8 +42,6 @@ def parse(txt):
     return ks
 
 
-hist = "histfile"
-upfn = "update"
 def loadHist(fn):
     with open(fn) as fp:
         txt = fp.read()
@@ -66,12 +68,19 @@ def cmp(old, new):
     return len(new), len(a), len(d)
 
 if __name__ == "__main__":
+    arg = sys.argv
+    test = arg[1] == "test"
+    if test:
+        log.info("test mode")
     log.info("post")
-    rsp = post('https://getpocket.com/v3/get', conf)
+    rsp = post('https://getpocket.com/v3/get', conf.conf)
     new = parse(rsp)
     old = loadHist(hist)
     c = cmp(old, new)
     log.info(str(c))
-    saveUpdate(upfn, c)
-    saveHist(hist, new)
-    log.info("save")
+    if not test:
+        saveUpdate(upfn, c)
+        saveHist(hist, new)
+        log.info("save")
+    else:
+        log.info("not save under test mode")
