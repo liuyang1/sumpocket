@@ -37,7 +37,7 @@ var option = {
         formatter: function (params) {
             var res = params[0].name;
             res += '<br> start: ' + params[0].value[0] + ' add: ' + ( + params[0].value[3] - params[0].value[0]);
-            res += '<br> end:   ' + params[0].value[3] + ' del: ' + ( - params[0].value[2] + params[0].value[0]);
+            res += '<br> end:   ' + params[0].value[1] + ' del: ' + ( - params[0].value[2] + params[0].value[0]);
             return res;
         }
     },

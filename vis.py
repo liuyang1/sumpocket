@@ -1,4 +1,6 @@
 #! /usr/bin/env python2
+import sys
+
 
 def loadData(fn):
     with open(fn) as fp:
@@ -55,5 +57,14 @@ def KTpl():
     print(r)
 
 
+def usage():
+    print("python2 vis.py [line/k]")
+
+
 if __name__ == "__main__":
-    KTpl()
+    if sys.argv[1] == "line":
+        LineTpl()
+    elif sys.argv[1] == "k":
+        KTpl()
+    else:
+        usage()
