@@ -69,7 +69,10 @@ def cmp(old, new):
 
 if __name__ == "__main__":
     arg = sys.argv
-    test = arg[1] == "test"
+    if len(arg) >= 2:
+        test = arg[1] == "test"
+    else:
+        test = False
     if test:
         log.info("test mode")
     log.info("post")
