@@ -4,7 +4,7 @@ import sys
 import urllib
 try:
     import urllib2
-except:
+except ImportError:
     print("use python2 instead")
     sys.exit()
 import json
@@ -62,7 +62,7 @@ def saveUpdate(fn, c):
         fp.write(s)
 
 
-def cmp(old, new):
+def cmpId(old, new):
     a = [i for i in new if i not in old]
     d = [i for i in old if i not in new]
     return len(new), len(a), len(d)
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     rsp = post('https://getpocket.com/v3/get', conf.conf)
     new = parse(rsp)
     old = loadHist(hist)
-    c = cmp(old, new)
+    c = cmpId(old, new)
     log.info(str(c))
     if not test:
         saveUpdate(upfn, c)
