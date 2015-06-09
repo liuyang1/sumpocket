@@ -21,7 +21,7 @@ def fmtLineTpl(tplfn, data):
     d = {}
     d['username'] = 'pocket4t'
     date = [t[0] for t in data]
-    // sumdata = [int(t[1]) for t in data]
+    # sumdata = [int(t[1]) for t in data]
     adddata = [int(t[2]) for t in data]
     deldata = [-1 * int(t[3]) for t in data]
     d['date'] = str(date)
