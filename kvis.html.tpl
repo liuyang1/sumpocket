@@ -41,6 +41,13 @@ var option = {
             return res;
         }
     },
+    dataZoom : {
+        show : true,
+        realtime : true,
+        start : 0,
+        end : 100,
+        realtime : true,
+    },
     calculable : true,
     xAxis : [
         {
